@@ -14,7 +14,7 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    redirect('/login?message=No se pudo iniciar sesión. Verifica tus credenciales.')
+    redirect('/login?message=Login Error: ' + error.message)
   }
 
   revalidatePath('/', 'layout')
@@ -31,7 +31,7 @@ export async function signup(formData: FormData) {
   const { data: authData, error } = await supabase.auth.signUp(data)
 
   if (error) {
-    redirect('/login?message=Error al crear la cuenta.')
+    redirect('/login?message=Error: ' + error.message)
   }
 
   // Si se crea el usuario, crear la empresa en nuestra base de datos (dummy name por ahora)
