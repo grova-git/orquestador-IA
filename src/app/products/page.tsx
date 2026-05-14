@@ -127,12 +127,12 @@ export default function ProductsPage() {
           <button 
             onClick={handleUpload}
             disabled={!file || loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-medium transition-colors disabled:opacity-50 whitespace-nowrap"
+            className="bg-[#25D366] hover:bg-[#20b858] text-black px-6 py-2 rounded-xl font-bold transition-colors disabled:opacity-50 whitespace-nowrap"
           >
             {loading ? "Subiendo..." : "Subir CSV"}
           </button>
         </div>
-        {message && <p className="mt-4 text-sm text-green-400">{message}</p>}
+        {message && <p className="mt-4 text-sm text-[#25D366]">{message}</p>}
       </div>
 
       {/* Product List */}
@@ -159,7 +159,7 @@ export default function ProductsPage() {
                 <tr key={p.id} className="hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4 font-medium text-white">{p.name}</td>
                   <td className="px-6 py-4 max-w-xs truncate" title={p.description}>{p.description || "-"}</td>
-                  <td className="px-6 py-4 font-mono text-blue-400">${p.price}</td>
+                  <td className="px-6 py-4 font-mono text-[#25D366]">${p.price}</td>
                   <td className="px-6 py-4 text-right">
                     <button onClick={() => handleDelete(p.id)} className="text-red-400 hover:text-red-300 p-2 rounded-lg hover:bg-red-400/10 transition-colors">
                       <Trash2 size={18} />

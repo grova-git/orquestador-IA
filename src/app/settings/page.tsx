@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Save, Key, MessageSquare, CreditCard, Bot } from "lucide-react";
+import { Save, Key, MessageSquare, CreditCard, Bot, Building2 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 
 interface ConfigData {
+  name: string;
   whatsapp_phone_number_id: string;
   whatsapp_access_token: string;
   mercadopago_access_token: string;
@@ -13,6 +14,7 @@ interface ConfigData {
 
 export default function SettingsPage() {
   const [config, setConfig] = useState<ConfigData>({
+    name: "",
     whatsapp_phone_number_id: "",
     whatsapp_access_token: "",
     mercadopago_access_token: "",
@@ -35,6 +37,7 @@ export default function SettingsPage() {
       if (res.ok) {
         const data = await res.json();
         setConfig({
+          name: data.name || "",
           whatsapp_phone_number_id: data.whatsapp_phone_number_id || "",
           whatsapp_access_token: data.whatsapp_access_token || "",
           mercadopago_access_token: data.mercadopago_access_token || "",
@@ -88,14 +91,34 @@ export default function SettingsPage() {
     <div className="w-full max-w-4xl">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-white mb-2">Configuración</h1>
-        <p className="text-gray-400">Gestiona las integraciones y personalidad de tu IA</p>
+        <p className="text-gray-400">Gestiona el perfil de tu empresa y las integraciones de la IA</p>
       </header>
 
       <div className="space-y-6">
+        {/* Perfil de Empresa */}
+        <div className="glass-panel rounded-2xl p-6 border border-white/5">
+          <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+            <Building2 size={20} className="text-[#25D366]" /> Perfil del Negocio
+          </h2>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">Nombre de la Empresa</label>
+              <input 
+                type="text" 
+                name="name"
+                value={config.name}
+                onChange={handleChange}
+                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-[#25D366] transition-colors placeholder:text-gray-600"
+                placeholder="Ej: Pizzería La Mamma"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* WhatsApp Config */}
         <div className="glass-panel rounded-2xl p-6 border border-white/5">
           <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-            <MessageSquare size={20} className="text-green-400" /> WhatsApp Cloud API
+            <MessageSquare size={20} className="text-[#25D366]" /> WhatsApp Cloud API
           </h2>
           <div className="space-y-4">
             <div>
@@ -105,7 +128,7 @@ export default function SettingsPage() {
                 name="whatsapp_phone_number_id"
                 value={config.whatsapp_phone_number_id}
                 onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500"
+                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-[#25D366] transition-colors placeholder:text-gray-600"
                 placeholder="Ej: 1158744353980655"
               />
             </div>
@@ -116,7 +139,7 @@ export default function SettingsPage() {
                 name="whatsapp_access_token"
                 value={config.whatsapp_access_token}
                 onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500"
+                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-[#25D366] transition-colors placeholder:text-gray-600"
                 placeholder="EA..."
               />
             </div>
@@ -126,7 +149,7 @@ export default function SettingsPage() {
         {/* Mercado Pago Config */}
         <div className="glass-panel rounded-2xl p-6 border border-white/5">
           <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-            <CreditCard size={20} className="text-blue-400" /> Mercado Pago
+            <CreditCard size={20} className="text-white" /> Mercado Pago
           </h2>
           <div className="space-y-4">
             <div>
@@ -136,7 +159,7 @@ export default function SettingsPage() {
                 name="mercadopago_access_token"
                 value={config.mercadopago_access_token}
                 onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500"
+                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-[#25D366] transition-colors placeholder:text-gray-600"
                 placeholder="APP_USR-..."
               />
               <p className="text-xs text-gray-500 mt-2">Este token permite que el bot genere links de pago a tu cuenta automáticamente.</p>
@@ -147,7 +170,7 @@ export default function SettingsPage() {
         {/* AI Prompt */}
         <div className="glass-panel rounded-2xl p-6 border border-white/5">
           <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-            <Bot size={20} className="text-purple-400" /> Personalidad de la IA
+            <Bot size={20} className="text-gray-300" /> Personalidad de la IA
           </h2>
           <div className="space-y-4">
             <div>
@@ -157,7 +180,7 @@ export default function SettingsPage() {
                 value={config.system_prompt}
                 onChange={handleChange}
                 rows={4}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-blue-500 resize-none"
+                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-white outline-none focus:border-[#25D366] transition-colors resize-none placeholder:text-gray-600"
                 placeholder="Eres un vendedor amigable..."
               />
               <p className="text-xs text-gray-500 mt-2">Instrucciones básicas de comportamiento para tu asistente de WhatsApp.</p>
@@ -166,15 +189,15 @@ export default function SettingsPage() {
         </div>
 
         {/* Save Button */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 pt-4">
           <button 
             onClick={handleSave}
             disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-medium transition-colors flex items-center gap-2 disabled:opacity-50"
+            className="bg-[#25D366] hover:bg-[#20b858] text-black px-8 py-3 rounded-xl font-bold transition-colors flex items-center gap-2 disabled:opacity-50"
           >
             <Save size={20} /> {loading ? "Guardando..." : "Guardar Configuración"}
           </button>
-          {message && <span className="text-sm text-green-400 font-medium">{message}</span>}
+          {message && <span className="text-sm text-[#25D366] font-medium">{message}</span>}
         </div>
       </div>
     </div>

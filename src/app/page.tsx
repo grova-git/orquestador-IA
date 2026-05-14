@@ -22,7 +22,7 @@ export default function Home() {
           </p>
         </div>
         <div className="glass-panel p-6 rounded-2xl relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#25D366]/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <h3 className="text-gray-400 text-sm font-medium mb-2 relative z-10">Ingresos (Mercado Pago)</h3>
           <p className="text-4xl font-bold text-white relative z-10">$ 45,200</p>
         </div>
@@ -42,7 +42,7 @@ export default function Home() {
             <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
               <td className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-xs">MA</div>
+                  <div className="w-8 h-8 rounded-full bg-[#25D366]/20 flex items-center justify-center text-[#25D366] font-bold text-xs">MA</div>
                   <span className="text-gray-200">Martín +54 9 11...</span>
                 </div>
               </td>
