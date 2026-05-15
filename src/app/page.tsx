@@ -23,13 +23,13 @@ export default async function Home() {
       orders = data;
       const { data: allOrders } = await supabase
         .from("orders")
-        .select("total, status")
+        .select("subtotal, status")
         .eq("company_id", user.id)
         .eq("status", "pagado");
         
       if (allOrders) {
         totalPaidOrders = allOrders.length;
-        totalRevenue = allOrders.reduce((acc, curr) => acc + (curr.total || 0), 0);
+        totalRevenue = allOrders.reduce((acc, curr) => acc + (curr.subtotal || 0), 0);
       }
     }
   }
@@ -97,7 +97,7 @@ export default async function Home() {
                       <span className="px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-xs font-medium">Pendiente</span>
                     )}
                   </td>
-                  <td className="p-4 text-gray-300">$ {order.total?.toLocaleString() || 0}</td>
+                  <td className="p-4 text-gray-300">$ {order.subtotal?.toLocaleString() || 0}</td>
                 </tr>
               ))
             )}
