@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
+import { OrderList } from "@/components/OrderList";
 
 export const dynamic = 'force-dynamic';
 
@@ -61,49 +62,7 @@ export default async function Home() {
       </div>
 
       <h2 className="text-xl font-bold text-white mb-4">Actividad Reciente</h2>
-      <div className="glass-panel rounded-2xl overflow-hidden">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="border-b border-white/10 text-gray-400 text-sm">
-              <th className="p-4 font-medium">Cliente</th>
-              <th className="p-4 font-medium">Estado</th>
-              <th className="p-4 font-medium">Monto</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.length === 0 ? (
-              <tr>
-                <td colSpan={3} className="p-8 text-center text-gray-500">
-                  Aún no hay órdenes recientes.
-                </td>
-              </tr>
-            ) : (
-              orders.map((order) => (
-                <tr key={order.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#25D366]/20 flex items-center justify-center text-[#25D366] font-bold text-xs">
-                        {order.user_phone ? order.user_phone.slice(-2) : '??'}
-                      </div>
-                      <span className="text-gray-200">+{order.user_phone}</span>
-                    </div>
-                  </td>
-                  <td className="p-4">
-                    {order.status === 'pagado' ? (
-                      <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-medium">Pagado</span>
-                    ) : order.status === 'cancelada' ? (
-                      <span className="px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-medium">Cancelada</span>
-                    ) : (
-                      <span className="px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-xs font-medium">Pendiente</span>
-                    )}
-                  </td>
-                  <td className="p-4 text-gray-300">$ {order.subtotal?.toLocaleString() || 0}</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      <OrderList orders={orders} />
     </div>
   );
 }
