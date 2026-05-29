@@ -17,6 +17,8 @@ export default function ProductsPage() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [minPrice, setMinPrice] = useState<string>("");
+  const [maxPrice, setMaxPrice] = useState<string>("");
   const supabase = createClient();
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -135,6 +137,38 @@ export default function ProductsPage() {
         {message && <p className="mt-4 text-sm text-[#25D366]">{message}</p>}
       </div>
 
+      {/* Filters Section */}
+      <div className="glass-panel rounded-2xl p-6 mb-8 border border-white/5 flex flex-col sm:flex-row gap-4 items-end">
+        <div className="flex-1 w-full">
+          <label className="block text-sm text-gray-400 mb-2">Precio Mínimo ($)</label>
+          <input 
+            type="number" 
+            min="0"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            placeholder="0"
+            className="w-full bg-black/40 border border-white/10 rounded-xl py-2 px-4 text-white placeholder-gray-600 focus:outline-none focus:border-[#25D366]/50"
+          />
+        </div>
+        <div className="flex-1 w-full">
+          <label className="block text-sm text-gray-400 mb-2">Precio Máximo ($)</label>
+          <input 
+            type="number" 
+            min="0"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            placeholder="Ilimitado"
+            className="w-full bg-black/40 border border-white/10 rounded-xl py-2 px-4 text-white placeholder-gray-600 focus:outline-none focus:border-[#25D366]/50"
+          />
+        </div>
+        <button 
+          onClick={() => { setMinPrice(""); setMaxPrice(""); }}
+          className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-xl transition-colors h-[42px] w-full sm:w-auto"
+        >
+          Limpiar
+        </button>
+      </div>
+
       {/* Product List */}
       <div className="glass-panel rounded-2xl border border-white/5 overflow-hidden">
         <table className="w-full text-left text-gray-300">
@@ -147,15 +181,35 @@ export default function ProductsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
-            {products.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
-                  <Package className="mx-auto mb-2 opacity-50" size={32} />
-                  No tienes productos aún. Sube un archivo CSV.
-                </td>
-              </tr>
-            ) : (
-              products.map((p) => (
+            {(() => {
+              const filteredProducts = products.filter(p => {
+                const min = minPrice === "" ? 0 : parseFloat(minPrice);
+                const max = maxPrice === "" ? Infinity : parseFloat(maxPrice);
+                return p.price >= min && p.price <= max;
+              });
+
+              if (products.length === 0) {
+                return (
+                  <tr>
+                    <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
+                      <Package className="mx-auto mb-2 opacity-50" size={32} />
+                      No tienes productos aún. Sube un archivo CSV.
+                    </td>
+                  </tr>
+                );
+              }
+
+              if (filteredProducts.length === 0) {
+                return (
+                  <tr>
+                    <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
+                      No se encontraron productos en ese rango de precios.
+                    </td>
+                  </tr>
+                );
+              }
+
+              return filteredProducts.map((p) => (
                 <tr key={p.id} className="hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4 font-medium text-white">{p.name}</td>
                   <td className="px-6 py-4 max-w-xs truncate" title={p.description}>{p.description || "-"}</td>
@@ -166,8 +220,8 @@ export default function ProductsPage() {
                     </button>
                   </td>
                 </tr>
-              ))
-            )}
+              ));
+            })()}
           </tbody>
         </table>
       </div>
